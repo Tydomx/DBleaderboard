@@ -1,15 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
   const leaderboard = document.getElementById("leaderboard");
+  const addPlayerForm = document.getElementById("add-player-form");
+  const playerNameInput = document.getElementById("player-name");
+  const playerPointsInput = document.getElementById("player-points");
 
-  // sample data
+  // sample data for initial leaderboard
   let players = [
     { name: "Player 1", points: 10 },
     { name: "Player 2", points: 30 },
     { name: "Player 3", points: 50 },
   ];
 
+  // rendering the leaderboard
   function renderLeaderboard() {
-    leaderboard.innerHTML = "";
+    leaderboard.innerHTML = ""; // clear the leaderboard
     players.forEach((player, index) => {
       const row = document.createElement("tr");
 
@@ -19,15 +23,17 @@ document.addEventListener("DOMContentLoaded", function () {
         <td><button onclick="removePlayer(${index})">Remove</button></td>
         `;
 
-      leaderboard.appendChild(row);
+      leaderboard.appendChild(row); // append the row to the leaderboard
     });
   }
 
+  // remove player from the leaderboard
   window.removePlayer = function (index) {
-    players.splice(index, 1);
-    renderLeaderboard();
+    players.splice(index, 1); // remove player at given index
+    renderLeaderboard(); // re-render the leaderboard
   };
 
+  // event listener to handle the input changes (editing name/points)
   leaderboard.addEventListener("input", function (e) {
     const target = e.target;
     const index = target.dataset.index;
@@ -35,6 +41,20 @@ document.addEventListener("DOMContentLoaded", function () {
       players[index].name = target.value;
     } else if (target.classList.contains("edit-points")) {
       players[index].points = parseInt(target.value) || 0;
+    }
+  });
+
+  // eventlistener to add in new players
+  addPlayerForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const name = playerNameInput.value.trim();
+    const points = parseInt(playerPointsInput.value) || 0;
+
+    if (name) {
+      players.push({ name, points });
+      renderLeaderboard();
+      playerNameInput.value = "";
+      playerPointsInput.value = "";
     }
   });
 
