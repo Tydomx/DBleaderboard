@@ -1,29 +1,42 @@
-let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+document.addEventListener("DOMContentLoaded", function () {
+  const leaderboard = document.getElementById("leaderboard");
 
-function renderLeaderboard() {
-  const tbody = document.getElementById("leaderboard");
-  tbody.innerHTML = "";
-  leaderboard.sort((a, b) => b.points - a.points);
-  leaderboard.forEach((player) => {
-    const row = `<tr><td>${player.name}</td><td>${player.points}</td></tr>`;
-    tbody.innerHTML += row;
-  });
-}
+  // sample data
+  let players = [
+    { name: "Player 1", score: 10 },
+    { name: "Player 2", score: 30 },
+    { name: "Player 3", score: 50 },
+  ];
 
-function updateScore() {
-  const playerName = document.getElementById("name").value.trim();
-  const playerPoints = parseInt(document.getElementById("points").value, 10);
-  if (!playerName || isNaN(playerPoints)) return;
+  function renderLeaderboard() {
+    leaderboard.innerHTML = "";
+    players.forEach((player, index) => {
+      const row = document.createElement("tr");
 
-  const playerIndex = leaderboard.findIndex((p) => p.name === playerName);
-  if (playerIndex !== -1) {
-    leaderboard[playerIndex].points = playerPoints;
-  } else {
-    leaderboard.push({ name: playerName, points: playerPoints });
+      row.innerHTML = `
+        <td><input type="text" value="${player.name}" data-index="${index}" class="edit-name"></td>
+        <td><input type="text" value="${player.points}" data-index="${index}" class="edit-points"></td>
+        <td><button onclick="removePlayer(${index})">Remove</button></td>
+        `;
+
+      leaderboard.appendChild(row);
+    });
   }
 
-  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
-  renderLeaderboard();
-}
+  window.removePlayer = function (index) {
+    players.splice(index, 1);
+    renderLeaderboard();
+  };
 
-renderLeaderboard();
+  leaderboard.addEventListener("input", function (e) {
+    const target = e.target;
+    const index = target.dataset.index;
+    if (target.classList.contains("edit-name")) {
+      players[index].name = target.value;
+    } else if (target.classList.contains("edit-points")) {
+      players[index].points = parseInt(target.value) || 0;
+    }
+  });
+
+  renderLeaderboard();
+});
