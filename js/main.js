@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // sample data
   let players = [
-    { name: "Player 1", score: 10 },
-    { name: "Player 2", score: 30 },
-    { name: "Player 3", score: 50 },
+    { name: "Player 1", points: 10 },
+    { name: "Player 2", points: 30 },
+    { name: "Player 3", points: 50 },
   ];
 
   function renderLeaderboard() {
