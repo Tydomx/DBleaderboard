@@ -57,3 +57,25 @@ form button {
 form button:hover {
   background: #0056b3;
 }
+
+input.edit-name {
+  width: 150px; /* Adjust name input width */
+  padding: 5px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+input.edit-points {
+  width: 80px; /* Adjust points input width */
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+input#player-name,
+input#player-points {
+  width: 200px; /* Adjust width for the form inputs */
+  padding: 5px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
