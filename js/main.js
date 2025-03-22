@@ -13,20 +13,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // rendering the leaderboard
   function renderLeaderboard() {
+    players.sort((a, b) => b.points - a.points); // sort players by points
+
     leaderboard.innerHTML = ""; // clear the leaderboard
     players.forEach((player, index) => {
       const row = document.createElement("tr");
-
       row.innerHTML = `
         <td><input type="text" value="${player.name}" data-index="${index}" class="edit-name"></td>
         <td><input type="text" value="${player.points}" data-index="${index}" class="edit-points"></td>
         <td><input type="text" value="${player.ptsRem}" data-index="${index}" class="edit-pts-rem"></td>
-        <td><button onclick="removePlayer(${index})">Remove</button></td>
+        <td>
+          <button onclick="enableEditing(${index})">Edit</button>
+          <button onclick="saveChanges(${index})" style="display:none;">Save</button>
+          <button onclick="removePlayer(${index})">Remove</button>
+          </td>
         `;
 
       leaderboard.appendChild(row); // append the row to the leaderboard
     });
   }
+
+  // Function to enable editing of points
+  window.enableEditing = function (index) {
+    const row = leaderboard.children[index];
+    playerPointsInput.readOnly = false;
+    row.querySelector("button:nth-child(1)").style.display = "none";
+    row.querySelector("button:nth-child(2)").style.display = "inline";
+  };
+
+  // Function to save changes after editing points
+  window.saveChanges = function (index) {
+    const row = leaderboard.children[index];
+    players[index].points =
+      parseInt(row.querySelector(".edit-points").value) || 0;
+
+    // Disable input after saving
+    playerPointsInput.readOnly = true;
+
+    // Toggle button visibility
+    row.querySelector("button:nth-child(1)").style.display = "inline";
+    row.querySelector("button:nth-child(2)").style.display = "none";
+
+    renderLeaderboard();
+  };
 
   // remove player from the leaderboard
   window.removePlayer = function (index) {
@@ -38,10 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
   leaderboard.addEventListener("input", function (e) {
     const target = e.target;
     const index = target.dataset.index;
+
     if (target.classList.contains("edit-name")) {
       players[index].name = target.value;
-    } else if (target.classList.contains("edit-points")) {
-      players[index].points = parseInt(target.value) || 0;
     } else if (target.classList.contains("edit-pts-rem")) {
       players[index].ptsRem = parseInt(target.value) || 0; // update points remaining
     }
