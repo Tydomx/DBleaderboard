@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demboyz NCAA Leaderboard</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <h1>DEMBOYZ NCAA Bracket Leaderboard</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard"></tbody>
+    </table>
+
+    <h2>Update Scores</h2>
+    <input type="text" id="name" placeholder="Name" />
+    <input type="number" id="points" placeholder="Points" />
+    <button onclick="updateScore()">Add/Update</button>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>
