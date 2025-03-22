@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // sample data for initial leaderboard
   let players = [
-    { name: "Player 1", points: 10 },
-    { name: "Player 2", points: 30 },
-    { name: "Player 3", points: 50 },
+    { name: "Player 1", points: 10, ptsRem: 0 },
+    { name: "Player 2", points: 30, ptsRem: 0 },
+    { name: "Player 3", points: 50, ptsRem: 0 },
   ];
 
   // rendering the leaderboard
@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
       row.innerHTML = `
         <td><input type="text" value="${player.name}" data-index="${index}" class="edit-name"></td>
         <td><input type="text" value="${player.points}" data-index="${index}" class="edit-points"></td>
+        <td><input type="text" value="${player.ptsRem}" data-index="${index}" class="edit-pts-rem"></td>
         <td><button onclick="removePlayer(${index})">Remove</button></td>
         `;
 
@@ -41,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
       players[index].name = target.value;
     } else if (target.classList.contains("edit-points")) {
       players[index].points = parseInt(target.value) || 0;
+    } else if (target.classList.contains("edit-pts-rem")) {
+      players[index].ptsRem = parseInt(target.value) || 0; // update points remaining
     }
   });
 
@@ -49,9 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     const name = playerNameInput.value.trim();
     const points = parseInt(playerPointsInput.value) || 0;
+    const ptsRem = 0;
 
     if (name) {
-      players.push({ name, points });
+      players.push({ name, points, ptsRem });
       renderLeaderboard();
       playerNameInput.value = "";
       playerPointsInput.value = "";
